@@ -1,4 +1,5 @@
 from modules import idealfunctionsmodule
+from modules import plotdata
 import pandas as pd
 
 def get_pd_from_csv(file_path):
@@ -19,8 +20,13 @@ def main():
 
     mapper = idealfunctionsmodule.TestMapper(best_functions, test_df)
     mapping_results = mapper.map_test_data()
-    print("\nTest Data Mapping Results:")
+    print("Test Data Mapping Results:")
     print(mapping_results)
+
+    plotdata.plot_ideal_functions(ideal_df)
+    plotdata.plot_training_data(train_df)
+    plotdata.plot_test_data_with_ideal(test_df, ideal_df, best_functions)
+    print("Plots generated successfully.")
 
 
 if __name__ == "__main__":
