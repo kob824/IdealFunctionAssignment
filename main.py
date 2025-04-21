@@ -3,9 +3,26 @@ from modules import plotdata
 import pandas as pd
 
 def get_pd_from_csv(file_path):
+    """
+    Load a CSV file into a pandas DataFrame.
+
+    Args:
+        file_path (str): Path to the CSV file.
+
+    Returns:
+        pd.DataFrame: DataFrame containing the CSV data.
+    """
     return pd.read_csv(file_path)
 
 def main():
+    """
+    Main function to execute the workflow:
+    1. Load ideal, training, and test datasets.
+    2. Fit ideal functions to training data.
+    3. Choose the best ideal functions based on RMSE.
+    4. Map test data to the best ideal functions.
+    5. Generate and display plots for ideal, training, and test data.
+    """
     ideal_df = get_pd_from_csv("data/ideal.csv")
     train_df = get_pd_from_csv("data/train.csv")
     test_df = get_pd_from_csv("data/test.csv")
@@ -30,4 +47,7 @@ def main():
 
 
 if __name__ == "__main__":
+    """
+    Entry point of the script. Calls the main function.
+    """
     main()
