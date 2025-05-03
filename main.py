@@ -1,5 +1,6 @@
 from modules import idealfunctionsmodule
 from modules import plotdata
+from modules import sqlite_helper
 import pandas as pd
 
 def get_pd_from_csv(file_path):
@@ -23,9 +24,17 @@ def main():
     4. Map test data to the best ideal functions.
     5. Generate and display plots for ideal, training, and test data.
     """
-    ideal_df = get_pd_from_csv("data/ideal.csv")
-    train_df = get_pd_from_csv("data/train.csv")
-    test_df = get_pd_from_csv("data/test.csv")
+    # ideal_df = get_pd_from_csv("data/ideal.csv")
+    # train_df = get_pd_from_csv("data/train.csv")
+    # test_df = get_pd_from_csv("data/test.csv")
+
+    # sqlite_helper.insert_csv_to_table("data/ideal.csv", "data/data.db")
+    # sqlite_helper.insert_csv_to_table("data/train.csv", "data/data.db")
+    # sqlite_helper.insert_csv_to_table("data/test.csv", "data/data.db")
+
+    ideal_df = sqlite_helper.get_table_data_as_df("data/data.db", "ideal")
+    train_df = sqlite_helper.get_table_data_as_df("data/data.db", "train")
+    test_df = sqlite_helper.get_table_data_as_df("data/data.db", "test")
 
     fitter = idealfunctionsmodule.FunctionFitter(ideal_df, train_df)
     fitter.fit_ideal_functions()
@@ -44,7 +53,6 @@ def main():
     plotdata.plot_training_data(train_df)
     plotdata.plot_test_data_with_ideal(test_df, ideal_df, best_functions)
     print("Plots generated successfully.")
-
 
 if __name__ == "__main__":
     """
