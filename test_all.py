@@ -4,20 +4,34 @@ import math
 from modules import idealfunctionsmodule
 
 class TestFunctionFitter(unittest.TestCase):
+    """
+    Unit tests for the FunctionFitter class, which fits ideal functions to training data
+    and selects the best functions based on RMSE.
+    """
+
     def setUp(self):
+        """
+        Set up test data for FunctionFitter tests.
+        Creates ideal and training DataFrames with known relationships.
+        """
         self.ideal_df = pd.DataFrame({
             'x': [0, 1, 2, 3, 4],
-            'ideal1': [1, 3, 5, 7, 9], # y = 2*x + 1
+            'ideal1': [1, 3, 5, 7, 9],  # y = 2*x + 1
             'ideal2': [0, 3, 6, 9, 12]  # y = 3*x + 0
         })
 
         self.train_df = pd.DataFrame({
             'x': [0, 1, 2, 3, 4],
-            'train1': [1, 3, 5, 7, 9], # y = 2*x + 1 (exact match with ideal1)
-            'train2': [0, 4, 7, 10, 13] # y = 3*x + 1 (not an exact match with ideal2)
+            'train1': [1, 3, 5, 7, 9],  # y = 2*x + 1 (exact match with ideal1)
+            'train2': [0, 4, 7, 10, 13]  # y = 3*x + 1 (not an exact match with ideal2)
         })
 
     def test_fit_and_choose_best_functions(self):
+        """
+        Test the fit_ideal_functions and choose_best_ideal_functions methods.
+        Verifies that the ideal functions are fitted correctly and the best functions
+        are chosen based on RMSE.
+        """
         fitter = idealfunctionsmodule.FunctionFitter(self.ideal_df, self.train_df)
         fitter.fit_ideal_functions()
         
@@ -42,7 +56,16 @@ class TestFunctionFitter(unittest.TestCase):
         self.assertEqual(best_functions['train2']['ideal_function'], 'ideal2')
 
 class TestTestMapper(unittest.TestCase):
+    """
+    Unit tests for the TestMapper class, which maps test data points to the best ideal functions
+    based on minimum deviation.
+    """
+
     def setUp(self):
+        """
+        Set up test data for TestMapper tests.
+        Creates ideal, training, and test DataFrames with known relationships.
+        """
         self.ideal_df = pd.DataFrame({
             'x': [0, 1, 2, 3, 4],
             'ideal1': [1, 3, 5, 7, 9],
@@ -70,6 +93,10 @@ class TestTestMapper(unittest.TestCase):
         })
     
     def test_map_test_data(self):
+        """
+        Test the map_test_data method to ensure correct mapping of test data to ideal functions.
+        Verifies that the assigned functions and deviations are calculated correctly.
+        """
         mapper = idealfunctionsmodule.TestMapper(self.best_functions, self.test_df)
         mapping_results = mapper.map_test_data()
         
@@ -93,4 +120,7 @@ class TestTestMapper(unittest.TestCase):
         self.assertAlmostEqual(row2['deviation'], 0, places=5)
 
 if __name__ == '__main__':
+    """
+    Run all unit tests.
+    """
     unittest.main()
